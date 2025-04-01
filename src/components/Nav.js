@@ -13,49 +13,120 @@ export default function Navbar() {
   const { user } = useAuth();
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
-  async function handleSignout(){
-    try{
+  async function handleSignout() {
+    try {
       await signOut(auth);
-      router.push("/")
+      router.push("/");
       setIsOpen(false);
-    }catch(e){
-      console.log("Sign out error,", e)
+    } catch (e) {
+      console.log("Sign out error,", e);
     }
   }
 
   return (
     <nav className="dark:bg-blue-950 flex items-center justify-between size-full h-16 fixed z-50 top-0 right-0 left-0 bg-blue-950 p-2">
       <h1
-        className="text-white dark:text-white cursor-pointer"
+        className="text-white dark:text-white text-nowrap cursor-pointer"
         onClick={() => router.push("/")}
       >
         MCQ-AI
       </h1>
-      <div className="md:hidden">
-      <Link href={"/"}>Home</Link>
-      <Link href={"/about"}>About</Link>
-      </div>
-      <div className="flex flex-row justify-between items-center p-1.5 h-full w-auto">
-        { user && <button
-          className="text-2xl mr-2.5 cursor-pointer"
-          onClick={() => setIsOpen(!isOpen)}
+      <ul className="hidden md:flex justify-center items-center size-full ">
+        <Link
+          href={"/"}
+          className="hover:-translate-y-1 ease-in transition-all border-b-2 border-b-white"
         >
-          {isOpen ? <FiX /> : <FiMenu />}
-        </button>}
+          Home
+        </Link>
+        <Link
+          href={"/dashboard"}
+          className="hover:-translate-y-1 ease-in transition-all border-b-2 border-b-white ml-4.5"
+        >
+          Dashboard
+        </Link>
+        <Link
+          href={"/about"}
+          className="hover:-translate-y-1 ease-in transition-all border-b-2 border-b-white ml-4.5"
+        >
+          About
+        </Link>
+      </ul>
+      <div className="flex flex-row justify-between items-center p-1.5 h-full w-auto">
+        {user && (
+          <button
+            className="text-2xl mr-2.5 cursor-pointer"
+            onClick={() => setIsOpen(!isOpen)}
+          >
+            {isOpen ? <FiX /> : <FiMenu />}
+          </button>
+        )}
+
+        {/* background blur */}
+        {isOpen && (
+          <div
+            className="fixed top-0 left-0 w-full h-full bg-black opacity-50 z-20"
+            onClick={() => setIsOpen(false)} // Close the menu when clicking the background
+          ></div>
+        )}
+        {/* background blur */}
+
+        {/* expandable menu */}
         <div
-          className={`fixed z-30 top-16 right-0 w-2/4 max-w-72 bg-blue-950 border-t-2  h-dvh ${
-            isOpen ? "block" : "hidden"
+          className={`fixed z-30 top-0 w-3/4 max-w-72 bg-blue-950 dark:bg-blue-950 h-dvh transition-all ease-in p-2.5 flex flex-col ${
+            isOpen ? "right-0" : "-right-100"
           }`}
         >
-          <div className="w-full border-red border-2 h-auto">
-            <img src={user?.photoURL || "/pfp.png"} className="h-auto w-auto" />
+          {user && (
+            <div className="flex items-center justify-end mb-6">
+              <button
+                className="text-4xl cursor-pointer flex"
+                onClick={() => setIsOpen(!isOpen)}
+              >
+                {isOpen ? <FiX /> : <FiMenu />}
+              </button>
+            </div>
+          )}
+          <div className="flex w-auto h-auto p-1.5 border-b-2 mb-2.5">
+            <Image
+              src={user?.photoURL || "/pfp.png"} // Fallback to "/pfp.png" if photoURL is null/undefined
+              alt="User profile"
+              className="cursor-pointer rounded-full h-11 w-11"
+              width={20}
+              height={20}
+            />
+            <div className="flex flex-col justify-center ml-2.5 w-full">
+              <h1>Hi, {user?.displayName} 👋</h1>
+              <p className="text-xs">{user?.email}</p>
+            </div>
           </div>
-          <ul className="flex flex-col">
-            <Link href={"/auth"}>Home</Link>
-            <Link href={"/about"}>About</Link>
-            <Link href={"/dashboard"}>Dashboard</Link>
-          </ul>
-          <button onClick={()=> handleSignout()} className="border-1 border-red-600 p-1.5 rounded-lg text-red-500 w-auto cursor-pointer">Sign Out</button>
+          <div className="h-full flex justify-between flex-col">
+            <ul className="flex flex-col" onClick={() => setIsOpen(false)}>
+              <Link
+                className="hover:text-gray-400 ease-in transition-all mt-2.5"
+                href={"/auth"}
+              >
+                Home
+              </Link>
+              <Link
+                className="hover:text-gray-400 ease-in transition-all mt-2.5"
+                href={"/dashboard"}
+              >
+                Dashboard
+              </Link>
+              <Link
+                className="hover:text-gray-400 ease-in transition-all mt-2.5"
+                href={"/about"}
+              >
+                About
+              </Link>
+            </ul>
+            <button
+              onClick={() => handleSignout()}
+              className="border-1 border-red-600 p-1.5 rounded-lg text-red-500 w-full cursor-pointer mb-8"
+            >
+              Sign Out
+            </button>
+          </div>
         </div>
         {user ? (
           <Image

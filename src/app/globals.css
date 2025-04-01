@@ -24,3 +24,17 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+.background {
+  height: 100vh; /* Take up the full screen height */
+  background: linear-gradient(45deg, rgb(40, 40, 40) 25%, transparent 25%) 0 0,
+              linear-gradient(-45deg, black 25%, transparent 25%) 0 0;
+  background-size: 20px 20px; /* Size of the grid pattern */
+  background-repeat: repeat; /* Repeat the pattern across the background */
+  color: white;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}

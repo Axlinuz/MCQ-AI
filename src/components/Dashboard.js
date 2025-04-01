@@ -1,33 +1,57 @@
-"use client";
-import { useAuth } from "@/authContext";
-import { auth } from "@/lib/firebase";
-import { signOut } from "firebase/auth";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+"use client"
 
-export default function DashboardComponent() {
-  const { user } = useAuth();
-  const router = useRouter();
-  async function handleSignout(){
-    try{
-        signOut(auth);
-        router.push("/")
-    }catch(e){
-        console.error(e)
-    }
-  }
 
-  useEffect(() => {
-    if (user) {
-      console.log("User is logged in, displaying main content");
-    } else {
-      router.push("/");
-    }
-  }, []);
+import React, { useState } from 'react';
+
+const BlogPostGenerator = () => {
+  const [responseData, setResponseData] = useState(null);
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  // Define the query to be sent
+  const yourRequest = 'hey, do you work ?';
+
+  // Function to make the request
+  const generateBlogPost = () => {
+    setLoading(true); // Start loading
+    setError(null); // Clear any previous errors
+
+    fetch(`https://free-unoficial-gpt4o-mini-api-g70n.onrender.com/chat/?query=${yourRequest}`, {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+      },
+    })
+      .then(response => response.json())
+      .then(data => {
+        setResponseData(data); // Set the data received from the API
+        setLoading(false); // Stop loading
+      })
+      .catch(error => {
+        setError('Request Error: ' + error.message); // Handle error
+        setLoading(false); // Stop loading
+      });
+  };
+
   return (
-    <>
-      <p>Welcome to the dashboard</p>
-      <button onClick={()=> handleSignout()}>signout</button>
-    </>
+    <div>
+      <h1>Blog Post Generator</h1>
+      <button onClick={generateBlogPost} disabled={loading}>
+        {loading ? 'Loading...' : 'Generate Blog Post'}
+      </button>
+
+      {loading && <p>Loading...</p>}
+
+      {error && <p style={{ color: 'red' }}>{error}</p>}
+
+      {responseData && (
+        <div>
+          <h2>Generated Response:</h2>
+          <pre>{JSON.stringify(responseData, null, 2)}</pre>
+        </div>
+      )}
+    </div>
   );
-}
+};
+
+export default BlogPostGenerator;
