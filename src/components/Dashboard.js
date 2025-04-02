@@ -1,57 +1,196 @@
-"use client"
+"use client"; // Ensure this is at the top
 
+import OpenAI from "openai";
+import { useAuth } from "@/authContext";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { FaEdit } from "react-icons/fa";
 
-import React, { useState } from 'react';
+export default function Dashboard() {
+  const { user } = useAuth();
+  const router = useRouter();
 
-const BlogPostGenerator = () => {
-  const [responseData, setResponseData] = useState(null);
+  useEffect(() => {
+    if (!user) {
+      return router.push("/");
+    }
+  }, [user, router]);
+
+  const [MCQData, setMCQData] = useState(null);
+  const [userPrompt, setUserPrompt] = useState("");
   const [error, setError] = useState(null);
+  const [showAnswer, setShowAnswer] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [edit, setEdit] = useState(true);
 
-  // Define the query to be sent
-  const yourRequest = 'hey, do you work ?';
+  function shuffleOptions(options) {
+    return options.sort(() => Math.random() - 0.5);
+  }
 
-  // Function to make the request
-  const generateBlogPost = () => {
-    setLoading(true); // Start loading
-    setError(null); // Clear any previous errors
+  const openai = new OpenAI({
+    baseURL: "https://openrouter.ai/api/v1",
+    apiKey: process.env.NEXT_PUBLIC_AI_API_KEY, // Ensure this is set in .env.local
+    dangerouslyAllowBrowser: true,
+    defaultHeaders: {},
+  });
 
-    fetch(`https://free-unoficial-gpt4o-mini-api-g70n.onrender.com/chat/?query=${yourRequest}`, {
-      method: 'GET',
-      headers: {
-        'Accept': 'application/json',
-      },
-    })
-      .then(response => response.json())
-      .then(data => {
-        setResponseData(data); // Set the data received from the API
-        setLoading(false); // Stop loading
-      })
-      .catch(error => {
-        setError('Request Error: ' + error.message); // Handle error
-        setLoading(false); // Stop loading
+  async function fetchData(e = null) {
+    if (e) e.preventDefault(); // Prevent form reload on submit
+
+    setMCQData(null);
+    setError(null);
+    setLoading(true);
+    setShowAnswer(false);
+
+    try {
+      console.log("Loading...");
+
+      const completion = await openai.chat.completions.create({
+        model: "google/gemini-2.5-pro-exp-03-25:free",
+        messages: [
+          {
+            role: "user",
+            content: [
+              {
+                type: "text",
+                text: `Create a MCQ with 4 options and 1 correct answer. 
+                do not add instruction, return only in json object
+                no variable declaration or extra text
+                options should be given the value "option". not "text" or anything else.
+                each answer should have a boolean of correctAnswer of true or false
+                only one correct answer
+                remove the text "json" at the beginning of your response
+                : ${userPrompt}`, // Do NOT encode, it's already text input
+              },
+            ],
+          },
+        ],
       });
-  };
+
+      if (completion.choices && completion.choices.length > 0) {
+        const responseData = completion.choices[0].message.content;
+
+        // Clean the response (remove any unwanted JSON formatting)
+        const cleanResponse = responseData.replace(/```(json)?/g, "").trim();
+
+        try {
+          let responseObject = JSON.parse(cleanResponse);
+          let shuffledOptions = shuffleOptions(responseObject.options);
+          setMCQData({ ...responseObject, options: shuffledOptions });
+          setEdit(false);
+          setError(null);
+        } catch (error) {
+          console.error("JSON Parsing Error:", error);
+          setError(
+            "Credit limits reached, please wait a few minutes before trying again!"
+          );
+        }
+      } else {
+        console.error("OpenRouter API Response:", completion);
+        setError(
+          "Credit limits reached, please wait a few minutes before trying again!"
+        );
+      }
+
+      console.log("Done!");
+    } catch (e) {
+      console.error("Fetch error:", e);
+      setError("Network error. Please try again.");
+    }
+
+    setLoading(false);
+  }
 
   return (
-    <div>
-      <h1>Blog Post Generator</h1>
-      <button onClick={generateBlogPost} disabled={loading}>
-        {loading ? 'Loading...' : 'Generate Blog Post'}
-      </button>
+    <>
+      <main
+        className={` pt-2 ${
+          edit ? "" : "absolute -left-1000"
+        } ease-in transition-all`}
+      >
+        <form
+          onSubmit={fetchData}
+          className="flex flex-col items-center justify-center md:max-w-3/4 m-auto"
+        >
+          <textarea
+            type="text"
+            value={userPrompt}
+            onChange={(e) => setUserPrompt(e.target.value)}
+            placeholder="Enter prompt"
+            className="resize-none border-2 border-black dark:border-white rounded-lg w-full min-h-28 max-h-52 p-2.5 "
+          />
+          <button
+            type="submit"
+            className="h-11 bg-blue-700 w-2/5 p-2.5 mt-2.5 rounded-lg font-bold text-white cursor-pointer hover:-translate-y-1 ease-in transition-all"
+          >
+            Create a quiz
+          </button>
+        </form>
+        {loading && <p>Loading....</p>}
 
-      {loading && <p>Loading...</p>}
+        {error && <h1>{error}</h1>}
+      </main>
+      {MCQData && (
+        <main className={`border-2 border-black dark:border-white rounded-lg p-2 md:max-w-3/4 m-auto mt-6 ${edit ? " hidden" : " block"}`}>
+          <div className="mb-10 p-2.5">
+            {MCQData && (
+              <h1 className="font-bold text-xl">{MCQData.question}</h1>
+            )}
+          </div>
 
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+          <div className={`${edit ? "hidden" : "block"}`}>
+            {MCQData &&
+              MCQData.options.map((choice, index) => (
+                <li
+                  key={index}
+                  className={`${
+                    showAnswer && choice.correctAnswer
+                      ? "bg-green-300"
+                      : "bg-gray-200 dark:bg-gray-500"
+                  } rounded-lg p-2 mt-2.5 mb-2.5 list-none text-black dark:text-black  flex flex-row`}
+                >
+                  <label>
+                    {index + 1}.{" "}
+                    <span className="text-lg">{choice.option}</span>
+                  </label>
+                  <span
+                    className={`${
+                      showAnswer && choice.correctAnswer ? "block" : "hidden"
+                    }`}
+                  >
+                    ✔️
+                  </span>
+                </li>
+              ))}
+          </div>
 
-      {responseData && (
-        <div>
-          <h2>Generated Response:</h2>
-          <pre>{JSON.stringify(responseData, null, 2)}</pre>
-        </div>
+          <div className="border-t-2 dark:border-white mt-2.5 flex flex-row justify-between items-center">
+            <div className="flex flex-row items-center justify-center h-full">
+              <button
+                className="h-11 bg-blue-700 p-2.5 mt-2.5 rounded-lg font-bold text-white cursor-pointer hover:-translate-y-1 ease-in transition-all"
+                onClick={() => fetchData()}
+              >
+                Regenerate
+              </button>
+              <button
+                className="flex items-center p-2.5 h-11 mt-2.5 ml-0.5 hover:bg-gray-200 hover:-translate-y-1 ease-in transition-all rounded-lg"
+                onClick={() => setEdit(!edit)}
+              >
+                <FaEdit className="text-black dark:text-white text-3xl" />
+              </button>
+            </div>
+
+            <button
+              className="h-11 bg-green-400 p-2.5 mt-2.5 rounded-lg font-bold cursor-pointer hover:-translate-y-1 ease-in transition-all"
+              onClick={() => {
+                setShowAnswer(true);
+              }}
+            >
+              Show Answer
+            </button>
+          </div>
+        </main>
       )}
-    </div>
+    </>
   );
-};
-
-export default BlogPostGenerator;
+}

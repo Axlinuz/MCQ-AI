@@ -34,19 +34,19 @@ export default function Navbar() {
       <ul className="hidden md:flex justify-center items-center size-full ">
         <Link
           href={"/"}
-          className="hover:-translate-y-1 ease-in transition-all border-b-2 border-b-white"
+          className="hover:-translate-y-1 ease-in transition-all border-b-2 border-b-white text-white"
         >
           Home
         </Link>
         <Link
           href={"/dashboard"}
-          className="hover:-translate-y-1 ease-in transition-all border-b-2 border-b-white ml-4.5"
+          className="hover:-translate-y-1 ease-in transition-all border-b-2 border-b-white ml-4.5 text-white"
         >
           Dashboard
         </Link>
         <Link
           href={"/about"}
-          className="hover:-translate-y-1 ease-in transition-all border-b-2 border-b-white ml-4.5"
+          className="hover:-translate-y-1 ease-in transition-all border-b-2 border-b-white ml-4.5 text-white"
         >
           About
         </Link>
@@ -72,7 +72,7 @@ export default function Navbar() {
 
         {/* expandable menu */}
         <div
-          className={`fixed z-30 top-0 w-3/4 max-w-72 bg-blue-950 dark:bg-blue-950 h-dvh transition-all ease-in p-2.5 flex flex-col ${
+          className={`fixed z-30 top-0 w-3/4 max-w-72 bg-blue-950 dark:bg-blue-950 h-dvh transition-all ease-in p-2.5 flex flex-col text-white ${
             isOpen ? "right-0" : "-right-100"
           }`}
         >
@@ -95,26 +95,26 @@ export default function Navbar() {
               height={20}
             />
             <div className="flex flex-col justify-center ml-2.5 w-full">
-              <h1>Hi, {user?.displayName} 👋</h1>
-              <p className="text-xs">{user?.email}</p>
+              <h1 className="text-white">Hi, {user?.displayName} 👋</h1>
+              <p className="text-xs text-white">{user?.email}</p>
             </div>
           </div>
           <div className="h-full flex justify-between flex-col">
             <ul className="flex flex-col" onClick={() => setIsOpen(false)}>
               <Link
-                className="hover:text-gray-400 ease-in transition-all mt-2.5"
+                className="hover:text-gray-400 ease-in transition-all mt-2.5 text-white"
                 href={"/auth"}
               >
                 Home
               </Link>
               <Link
-                className="hover:text-gray-400 ease-in transition-all mt-2.5"
+                className="hover:text-gray-400 ease-in transition-all mt-2.5  text-white"
                 href={"/dashboard"}
               >
                 Dashboard
               </Link>
               <Link
-                className="hover:text-gray-400 ease-in transition-all mt-2.5"
+                className="hover:text-gray-400 ease-in transition-all mt-2.5 text-white"
                 href={"/about"}
               >
                 About
@@ -139,7 +139,7 @@ export default function Navbar() {
         ) : (
           <button
             onClick={() => router.push("/auth")}
-            className="rounded-lg border-white dark:border-white border-2 p-1 text-white dark:text-white cursor-pointer "
+            className="rounded-lg border-white dark:border-white border-2 p-1 text-white dark:text-white cursor-pointer text-nowrap "
           >
             Sign in / Sign up
           </button>
