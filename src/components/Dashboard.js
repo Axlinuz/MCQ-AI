@@ -5,6 +5,7 @@ import { useAuth } from "@/authContext";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { FaEdit } from "react-icons/fa";
+import Loading from "./Loading";
 
 export default function Dashboard() {
   const { user } = useAuth();
@@ -106,7 +107,7 @@ export default function Dashboard() {
       <main
         className={` pt-2 ${
           edit ? "" : "absolute -left-1000"
-        } ease-in transition-all`}
+        } ease-in transition-all m-auto`}
       >
         <form
           onSubmit={fetchData}
@@ -126,12 +127,11 @@ export default function Dashboard() {
             Create a quiz
           </button>
         </form>
-        {loading && <p>Loading....</p>}
 
         {error && <h1>{error}</h1>}
       </main>
       {MCQData && (
-        <main className={`border-2 border-black dark:border-white rounded-lg p-2 md:max-w-3/4 m-auto mt-6 ${edit ? " hidden" : " block"}`}>
+        <main className={`border-2 border-black dark:border-white rounded-lg p-2 pt-6 md:max-w-3/4 m-auto mt-6 ${edit ? " hidden" : " block"}`}>
           <div className="mb-10 p-2.5">
             {MCQData && (
               <h1 className="font-bold text-xl">{MCQData.question}</h1>
@@ -171,6 +171,7 @@ export default function Dashboard() {
                 onClick={() => fetchData()}
               >
                 Regenerate
+              
               </button>
               <button
                 className="flex items-center p-2.5 h-11 mt-2.5 ml-0.5 hover:bg-gray-200 hover:-translate-y-1 ease-in transition-all rounded-lg"
@@ -191,6 +192,7 @@ export default function Dashboard() {
           </div>
         </main>
       )}
+      { loading && <Loading/>}
     </>
   );
 }
