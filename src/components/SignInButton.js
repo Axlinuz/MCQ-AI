@@ -4,14 +4,13 @@ import Image from "next/image";
 import { auth } from "@/lib/firebase";
 import { useRouter } from "next/navigation";
 
-
 export default function SignInButton() {
   const router = useRouter();
   const provider = new GoogleAuthProvider();
   const signInWithGoogle = async () => {
     try {
       await signInWithPopup(auth, provider);
-      router.push("/dashboard")
+      router.push("/dashboard");
     } catch (e) {
       console.error("Sign in error", e);
     }
@@ -31,6 +30,5 @@ export default function SignInButton() {
       />
       Continue In With Google
     </button>
-    
   );
 }

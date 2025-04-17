@@ -1,4 +1,4 @@
-"use client"; // Ensure this is at the top
+"use client";
 
 import OpenAI from "openai";
 import { useAuth } from "@/authContext";
@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { FaEdit } from "react-icons/fa";
 import Loading from "./Loading";
+import Notification from "./Notification";
 
 export default function Dashboard() {
   const { user } = useAuth();
@@ -13,7 +14,7 @@ export default function Dashboard() {
 
   useEffect(() => {
     if (!user) {
-      return router.push("/");
+      return router.push("/auth");
     }
   }, [user, router]);
 
@@ -30,13 +31,13 @@ export default function Dashboard() {
 
   const openai = new OpenAI({
     baseURL: "https://openrouter.ai/api/v1",
-    apiKey: process.env.NEXT_PUBLIC_AI_API_KEY, // Ensure this is set in .env.local
+    apiKey: process.env.NEXT_PUBLIC_AI_API_KEY,
     dangerouslyAllowBrowser: true,
     defaultHeaders: {},
   });
 
   async function fetchData(e = null) {
-    if (e) e.preventDefault(); // Prevent form reload on submit
+    if (e) e.preventDefault();
 
     setMCQData(null);
     setError(null);
@@ -47,7 +48,7 @@ export default function Dashboard() {
       console.log("Loading...");
 
       const completion = await openai.chat.completions.create({
-        model: "google/gemini-2.5-pro-exp-03-25:free",
+        model: "google/gemini-2.0-flash-001",
         messages: [
           {
             role: "user",
@@ -61,7 +62,7 @@ export default function Dashboard() {
                 each answer should have a boolean of correctAnswer of true or false
                 only one correct answer
                 remove the text "json" at the beginning of your response
-                : ${userPrompt}`, // Do NOT encode, it's already text input
+                : ${userPrompt}`,
               },
             ],
           },
@@ -71,7 +72,6 @@ export default function Dashboard() {
       if (completion.choices && completion.choices.length > 0) {
         const responseData = completion.choices[0].message.content;
 
-        // Clean the response (remove any unwanted JSON formatting)
         const cleanResponse = responseData.replace(/```(json)?/g, "").trim();
 
         try {
@@ -91,6 +91,7 @@ export default function Dashboard() {
         setError(
           "Credit limits reached, please wait a few minutes before trying again!"
         );
+        <Notification msg="Credit limits reached, please wait a few minutes before trying again!"/>
       }
 
       console.log("Done!");
@@ -117,8 +118,8 @@ export default function Dashboard() {
             type="text"
             value={userPrompt}
             onChange={(e) => setUserPrompt(e.target.value)}
-            placeholder="Enter prompt"
-            className="resize-none border-2 border-black dark:border-white rounded-lg w-full min-h-28 max-h-52 p-2.5 "
+            placeholder="Enter a topic or a body of text for your questions "
+            className="resize-none border-2 border-black dark:border-white rounded-lg w-full min-h-28 max-h-52 p-2.5 placeholder:text-lg"
           />
           <button
             type="submit"
@@ -131,7 +132,11 @@ export default function Dashboard() {
         {error && <h1>{error}</h1>}
       </main>
       {MCQData && (
-        <main className={`border-2 border-black dark:border-white rounded-lg p-2 pt-6 md:max-w-3/4 m-auto mt-6 ${edit ? " hidden" : " block"}`}>
+        <main
+          className={`border-2 border-black dark:border-white rounded-lg p-2 pt-6 md:max-w-3/4 m-auto mt-6 ${
+            edit ? " hidden" : " block"
+          }`}
+        >
           <div className="mb-10 p-2.5">
             {MCQData && (
               <h1 className="font-bold text-xl">{MCQData.question}</h1>
@@ -171,7 +176,6 @@ export default function Dashboard() {
                 onClick={() => fetchData()}
               >
                 Regenerate
-              
               </button>
               <button
                 className="flex items-center p-2.5 h-11 mt-2.5 ml-0.5 hover:bg-gray-200 hover:-translate-y-1 ease-in transition-all rounded-lg"
@@ -182,7 +186,7 @@ export default function Dashboard() {
             </div>
 
             <button
-              className="h-11 bg-green-400 p-2.5 mt-2.5 rounded-lg font-bold cursor-pointer hover:-translate-y-1 ease-in transition-all"
+              className="h-11 bg-green-400 text-black p-2.5 mt-2.5 rounded-lg font-bold cursor-pointer hover:-translate-y-1 ease-in transition-all"
               onClick={() => {
                 setShowAnswer(true);
               }}
@@ -192,7 +196,7 @@ export default function Dashboard() {
           </div>
         </main>
       )}
-      { loading && <Loading/>}
+      {loading && <Loading />}
     </>
   );
 }
