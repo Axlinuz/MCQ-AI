@@ -1,6 +1,14 @@
+import { Varela_Round } from "next/font/google";
+import Image from "next/image";
+
+const varela = Varela_Round({
+  weight: "400",
+  subsets: ["latin"],
+});
+
 export default function About() {
   return (
-    <main className="md:max-w-2/4 m-auto">
+    <main className={`md:max-w-2/4 m-auto ${varela.className}`}>
       <div className="pt-2.5 flex flex-col p-2.5 border-b-2 border-black dark:border-white">
         <h2 className="text-lg font-bold text-center">About This Website</h2>
         <p className=" text-center">
@@ -40,6 +48,38 @@ export default function About() {
             OpenRouter.
           </a>
         </p>
+      </div>
+
+      <div className="pt-2.5 flex flex-col p-2.5 border-b-2 border-black dark:border-white">
+        <h1 className="text-lg font-bold text-center">Reach me out on..</h1>
+        <div className="m-auto flex items-center justify-center">
+          <a href="https://t.me/lianpui">
+            <Image
+              src={"/telegram.svg"}
+              alt="telegram icon"
+              width={40}
+              height={40}
+            />
+          </a>
+          <a href="https://github.com/Axlinuz">
+            <Image
+              src={"/github.svg"}
+              alt="Github icon"
+              width={60}
+              height={60}
+              className="rounded-full"
+            />
+          </a>
+
+          <a href="mailto:xalian2020@gmail.com">
+            <Image
+              src={"/email.webp"}
+              alt="email icon"
+              width={40}
+              height={40}
+            />
+          </a>
+        </div>
       </div>
     </main>
   );

@@ -9,14 +9,15 @@ import Loading from "./Loading";
 import Notification from "./Notification";
 
 export default function Dashboard() {
-  const { user } = useAuth();
+  const { user, loader } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
-    if (!user) {
-      return router.push("/auth");
+ 
+    if (!loader && !user) {
+      router.push("/auth");
     }
-  }, [user, router]);
+  }, [user, loader, router]);
 
   const [MCQData, setMCQData] = useState(null);
   const [userPrompt, setUserPrompt] = useState("");

@@ -12,12 +12,12 @@ import { FiMenu, FiX } from "react-icons/fi";
 import { Varela_Round } from "next/font/google";
 
 const varela = Varela_Round({
-  weight: '400',
-  subsets: ['latin'],
+  weight: "400",
+  subsets: ["latin"],
 });
 
 export default function Navbar() {
-  const { user } = useAuth();
+  const { user, loader } = useAuth();
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   async function handleSignout() {
@@ -34,13 +34,13 @@ export default function Navbar() {
     <nav
       className={`dark:bg-blue-950 flex items-center justify-between size-full h-16 fixed z-50 top-0 right-0 left-0 bg-blue-950 p-2 ${varela.className}`}
     >
-      <h1
-        className="text-white dark:text-white text-nowrap cursor-pointer"
+      <div
+        className="bg-white h-full w-auto flex items-center justify-center rounded-full p-2 cursor-pointer"
         onClick={() => router.push("/")}
       >
-        MCQ-AI
-      </h1>
-      <img className="h-auto" src="logo.png" alt="logo image"/>
+        <Image src={"/logo.svg"} width={70} height={40} alt="Logo image" />
+      </div>
+
       <ul className="hidden md:flex justify-center items-center size-full ">
         <Link
           href={"/"}
@@ -138,22 +138,24 @@ export default function Navbar() {
             </button>
           </div>
         </div>
-        {user ? (
-          <Image
-            src={user?.photoURL || "/pfp.png"} // Fallback to "/pfp.png" if photoURL is null/undefined
-            alt="User profile"
-            className="cursor-pointer rounded-full h-full w-auto"
-            width={20}
-            height={20}
-          />
-        ) : (
-          <button
-            onClick={() => router.push("/auth")}
-            className="rounded-lg border-white dark:border-white border-2 p-1 text-white dark:text-white cursor-pointer text-nowrap "
-          >
-            Sign in / Sign up
-          </button>
-        )}
+        {!loader ? (
+          user ? (
+            <Image
+              src={user?.photoURL || "/pfp.png"}
+              alt="User profile"
+              className="cursor-pointer rounded-full h-full w-auto"
+              width={20}
+              height={20}
+            />
+          ) : (
+            <button
+              onClick={() => router.push("/auth")}
+              className="rounded-lg border-white dark:border-white border-2 p-1 text-white dark:text-white cursor-pointer text-nowrap"
+            >
+              Sign in / Sign up
+            </button>
+          )
+        ) : null}
       </div>
     </nav>
   );

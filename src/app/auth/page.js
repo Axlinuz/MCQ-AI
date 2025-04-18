@@ -31,7 +31,7 @@ export default function AuthPage() {
         </p>
       ) : (
         <p
-          className="text-center text-blue-600 cursor-pointer mt-4"
+          className="text-center text-blue-600 cursor-pointer mt-4 mb-7 border-b-2 border-white"
           onClick={() => setNewUser(true)}
         >
           New here? Create a new account!
