@@ -196,7 +196,7 @@ export default function Dashboard() {
           </div>
         </main>
       )}
-      {loading && alert(error)}
+      {error ? (error === null ? null : alert(error)) : null}
     </>
   );
 }
