@@ -122,8 +122,6 @@ export default function Dashboard() {
             Create a quiz
           </button>
         </form>
-
-        {error && <h1>{error}</h1>}
       </main>
       {MCQData && (
         <main
