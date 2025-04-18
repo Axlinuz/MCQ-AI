@@ -5,6 +5,7 @@ import { useAuth } from "@/authContext";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { FaEdit } from "react-icons/fa";
+import Loader from "./Loader.";
 
 export default function Dashboard() {
   const { user, loader } = useAuth();
@@ -43,8 +44,6 @@ export default function Dashboard() {
     setShowAnswer(false);
 
     try {
-      console.log("Loading...");
-
       const completion = await openai.chat.completions.create({
         model: "google/gemini-2.0-flash-001",
         messages: [
@@ -90,8 +89,6 @@ export default function Dashboard() {
           "Credit limits reached, please wait a few minutes before trying again!"
         );
       }
-
-      console.log("Done!");
     } catch (e) {
       console.error("Fetch error:", e);
       setError("Network error. Please try again.");
@@ -194,6 +191,7 @@ export default function Dashboard() {
         </main>
       )}
       {error ? (error === null ? null : alert(error)) : null}
+      {loading && <Loader />}
     </>
   );
 }
