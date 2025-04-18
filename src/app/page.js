@@ -21,7 +21,7 @@ export default function Home() {
         <span className="text-red-500">MCQ-AI</span>: Instantly Transform Any
         Text into Engaging{" "}
         <span className="text-yellow-300">Multiple-Choice Quizzes </span>with
-        the Power of <span className="text-blue-600">ChatGPT</span> for
+        the Power of <span className="text-blue-600">Gemini</span> for
         Learning, Teaching, and Test Preparation!🪐🚀
       </h1>
       <button
