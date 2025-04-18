@@ -155,7 +155,16 @@ export default function Navbar() {
               Sign in / Sign up
             </button>
           )
-        ) : null}
+        ) : (
+          <div className="h-auto bg-white rounded-full">
+            <Image
+              src={"/loading.svg"}
+              width={40}
+              height={40}
+              alt="loading image"
+            />
+          </div>
+        )}
       </div>
     </nav>
   );
