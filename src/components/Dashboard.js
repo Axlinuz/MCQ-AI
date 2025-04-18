@@ -5,8 +5,7 @@ import { useAuth } from "@/authContext";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { FaEdit } from "react-icons/fa";
-import Loading from "./Loading";
-import Notification from "./Notification";
+
 
 export default function Dashboard() {
   const { user, loader } = useAuth();
@@ -92,7 +91,7 @@ export default function Dashboard() {
         setError(
           "Credit limits reached, please wait a few minutes before trying again!"
         );
-        <Notification msg="Credit limits reached, please wait a few minutes before trying again!"/>
+        
       }
 
       console.log("Done!");
@@ -197,7 +196,7 @@ export default function Dashboard() {
           </div>
         </main>
       )}
-      {loading && <Loading />}
+      {loading && alert(error)}
     </>
   );
 }

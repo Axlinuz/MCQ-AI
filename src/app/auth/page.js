@@ -18,7 +18,7 @@ export default function AuthPage() {
     } else {
       console.log("user not found, redicrecting to auth page.");
     }
-  }, []);
+  }, [user, route]);
   return (
     <main className="border-2 border-black text-white bg-blue-950 p-4 rounded-lg w-3/4 m-auto max-w-md mt-4 min-w-72 relative top-1/7">
       {newUser ? <SignUpEmailAndPassword /> : <LoginEmailAndPassword />}
