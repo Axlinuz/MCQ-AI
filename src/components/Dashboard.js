@@ -6,13 +6,11 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { FaEdit } from "react-icons/fa";
 
-
 export default function Dashboard() {
   const { user, loader } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
- 
     if (!loader && !user) {
       router.push("/auth");
     }
@@ -91,7 +89,6 @@ export default function Dashboard() {
         setError(
           "Credit limits reached, please wait a few minutes before trying again!"
         );
-        
       }
 
       console.log("Done!");
