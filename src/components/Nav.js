@@ -10,6 +10,7 @@ import { useState } from "react";
 import { FiMenu, FiX } from "react-icons/fi";
 
 import { Varela_Round } from "next/font/google";
+import Loader from "./Loader.";
 
 const varela = Varela_Round({
   weight: "400",
@@ -156,14 +157,8 @@ export default function Navbar() {
             </button>
           )
         ) : (
-          <div className="h-auto bg-white rounded-full">
-            <Image
-              src={"/loading.svg"}
-              width={40}
-              height={40}
-              alt="loading image"
-            />
-          </div>
+          <Loader/>
+          
         )}
       </div>
     </nav>
