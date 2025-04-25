@@ -3,6 +3,7 @@
 import { useAuth } from "@/authContext";
 import { useRouter } from "next/navigation";
 import { Lilita_One } from "next/font/google";
+import Image from "next/image";
 
 
 const lilita = Lilita_One({ subsets: ["latin"], weight: "400" });
@@ -30,6 +31,7 @@ export default function Home() {
       >
         Try it out!
       </button>
+      <a href="/about" className="flex flex-row justify-between items-center text-blue-500 underline mt-4 text-lg">About <img src="/right-up.svg" alt="arrow to go to about page" className="dark:bg-white"/></a>
       
     </div>
   );
