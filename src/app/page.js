@@ -17,7 +17,8 @@ export default function Home() {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen p-4 text-center md:max-w-3/4 m-auto">
+    <div className="min-h-screen">
+      <div className="flex flex-col items-center justify-center  p-4 text-center md:max-w-3/4 m-auto bg-white/30 backdrop-blur-lg rounded-4xl mt-50 p-4">
       <h1 className={`${lilita.className} text-4xl md:text-5xl font-bold`}>
         <span className="text-red-500">MCQ-AI</span>: Instantly Transform Any
         Text into Engaging{" "}
@@ -31,8 +32,9 @@ export default function Home() {
       >
         Try it out!
       </button>
-      <a href="/about" className="flex flex-row justify-between items-center text-blue-500 underline mt-4 text-lg">About <img src="/right-up.svg" alt="arrow to go to about page" className="dark:bg-white"/></a>
+      <a href="/about" className="flex flex-row justify-between items-center text-blue-500 underline mt-4 text-lg">About <img src="/right-up.svg" alt="arrow to go to about page"/></a>
       
+    </div>
     </div>
   );
 }

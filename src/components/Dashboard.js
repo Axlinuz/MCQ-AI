@@ -5,7 +5,7 @@ import { useAuth } from "@/authContext";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { FaEdit } from "react-icons/fa";
-import Loader from "./Loader.";
+import Loader from "./Loader";
 
 export default function Dashboard() {
   const { user, loader } = useAuth();
@@ -97,10 +97,14 @@ export default function Dashboard() {
     setLoading(false);
   }
 
+  if (loader) {
+    return <Loader />;
+  }
+
   return (
     <>
       <main
-        className={` pt-2 ${
+        className={` pt-2 mt-6 w-[90%] ${
           edit ? "" : "absolute -left-1000"
         } ease-in transition-all m-auto`}
       >
