@@ -3,7 +3,6 @@
 import { useAuth } from "@/authContext";
 import { useRouter } from "next/navigation";
 import { Lilita_One } from "next/font/google";
-import Image from "next/image";
 
 
 const lilita = Lilita_One({ subsets: ["latin"], weight: "400" });

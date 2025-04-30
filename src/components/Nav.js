@@ -115,7 +115,7 @@ export default function Navbar() {
           )}
         </div>
       </nav>
-      {isOpen && <Expandable state={isOpen} setIsOpen={setIsOpen} />}
+      <Expandable state={isOpen} setIsOpen={setIsOpen} />
     </>
   );
 }

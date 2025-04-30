@@ -42,57 +42,61 @@ export default function Dashboard() {
     setError(null);
     setLoading(true);
     setShowAnswer(false);
-
-    try {
-      const completion = await openai.chat.completions.create({
-        model: "google/gemini-2.0-flash-001",
-        messages: [
-          {
-            role: "user",
-            content: [
-              {
-                type: "text",
-                text: `Create a MCQ with 4 options and 1 correct answer. 
-                do not add instruction, return only in json object
-                no variable declaration or extra text
-                options should be given the value "option". not "text" or anything else.
-                each answer should have a boolean of correctAnswer of true or false
-                only one correct answer
-                remove the text "json" at the beginning of your response
-                : ${userPrompt}`,
-              },
-            ],
-          },
-        ],
-      });
-
-      if (completion.choices && completion.choices.length > 0) {
-        const responseData = completion.choices[0].message.content;
-
-        const cleanResponse = responseData.replace(/```(json)?/g, "").trim();
-
-        try {
-          let responseObject = JSON.parse(cleanResponse);
-          let shuffledOptions = shuffleOptions(responseObject.options);
-          setMCQData({ ...responseObject, options: shuffledOptions });
-          setEdit(false);
-          setError(null);
-        } catch (error) {
-          console.error("JSON Parsing Error:", error);
+    if(userPrompt !== ""){
+      try {
+        const completion = await openai.chat.completions.create({
+          model: "google/gemini-2.0-flash-001",
+          messages: [
+            {
+              role: "user",
+              content: [
+                {
+                  type: "text",
+                  text: `Create a MCQ with 4 options and 1 correct answer. 
+                  do not add instruction, return only in json object
+                  no variable declaration or extra text
+                  options should be given the value "option". not "text" or anything else.
+                  each answer should have a boolean of correctAnswer of true or false
+                  only one correct answer
+                  remove the text "json" at the beginning of your response
+                  : ${userPrompt}`,
+                },
+              ],
+            },
+          ],
+        });
+  
+        if (completion.choices && completion.choices.length > 0) {
+          const responseData = completion.choices[0].message.content;
+  
+          const cleanResponse = responseData.replace(/```(json)?/g, "").trim();
+  
+          try {
+            let responseObject = JSON.parse(cleanResponse);
+            let shuffledOptions = shuffleOptions(responseObject.options);
+            setMCQData({ ...responseObject, options: shuffledOptions });
+            setEdit(false);
+            setError(null);
+          } catch (error) {
+            console.error("JSON Parsing Error:", error);
+            setError(
+              "Credit limits reached, please wait a few minutes before trying again!"
+            );
+          }
+        } else {
+          console.error("OpenRouter API Response:", completion);
           setError(
             "Credit limits reached, please wait a few minutes before trying again!"
           );
         }
-      } else {
-        console.error("OpenRouter API Response:", completion);
-        setError(
-          "Credit limits reached, please wait a few minutes before trying again!"
-        );
+      } catch (e) {
+        console.error("Fetch error:", e);
+        setError("Network error. Please try again.");
       }
-    } catch (e) {
-      console.error("Fetch error:", e);
-      setError("Network error. Please try again.");
+    }else{
+      alert("Please enter a prompt first")
     }
+    
 
     setLoading(false);
   }
@@ -121,7 +125,8 @@ export default function Dashboard() {
           />
           <button
             type="submit"
-            className="h-11 bg-blue-700 w-2/5 p-2.5 mt-2.5 rounded-lg font-bold text-white cursor-pointer hover:-translate-y-1 ease-in transition-all"
+            className="h-11 bg-blue-700 w-2/5 p-2.5 mt-2.5 rounded-lg font-bold text-white cursor-pointer hover:-translate-y-1 ease-in transition-all disabled:bg-blue-600"
+            disabled= {userPrompt === "" ? true : false}
           >
             Create a quiz
           </button>
@@ -182,7 +187,7 @@ export default function Dashboard() {
             </div>
 
             <button
-              className="h-11 bg-green-400 text-black p-2.5 mt-2.5 rounded-lg font-bold cursor-pointer hover:-translate-y-1 ease-in transition-all"
+              className={`h-11 bg-green-400 text-black p-2.5 mt-2.5 rounded-lg font-bold cursor-pointer hover:-translate-y-1 ease-in transition-all`}
               onClick={() => {
                 setShowAnswer(true);
               }}
