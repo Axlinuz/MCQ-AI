@@ -42,7 +42,7 @@ export default function Dashboard() {
     setError(null);
     setLoading(true);
     setShowAnswer(false);
-    if(userPrompt !== ""){
+    if (userPrompt !== "") {
       try {
         const completion = await openai.chat.completions.create({
           model: "google/gemini-2.0-flash-001",
@@ -65,12 +65,12 @@ export default function Dashboard() {
             },
           ],
         });
-  
+
         if (completion.choices && completion.choices.length > 0) {
           const responseData = completion.choices[0].message.content;
-  
+
           const cleanResponse = responseData.replace(/```(json)?/g, "").trim();
-  
+
           try {
             let responseObject = JSON.parse(cleanResponse);
             let shuffledOptions = shuffleOptions(responseObject.options);
@@ -93,10 +93,9 @@ export default function Dashboard() {
         console.error("Fetch error:", e);
         setError("Network error. Please try again.");
       }
-    }else{
-      alert("Please enter a prompt first")
+    } else {
+      alert("Please enter a prompt first");
     }
-    
 
     setLoading(false);
   }
@@ -126,7 +125,7 @@ export default function Dashboard() {
           <button
             type="submit"
             className="h-11 bg-blue-700 w-2/5 p-2.5 mt-2.5 rounded-lg font-bold text-white cursor-pointer hover:-translate-y-1 ease-in transition-all disabled:bg-blue-600"
-            disabled= {userPrompt === "" ? true : false}
+            disabled={userPrompt === "" ? true : false}
           >
             Create a quiz
           </button>

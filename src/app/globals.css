@@ -25,8 +25,10 @@ body {
   height: 100vh; /* Take up the full screen height */
   background: linear-gradient(45deg, rgb(40, 40, 40) 25%, transparent 25%) 0 0,
               linear-gradient(-45deg, black 25%, transparent 25%) 0 0;
-  background-size: 20px 20px; /* Size of the grid pattern */
-  background-repeat: repeat; /* Repeat the pattern across the background */
+
+  background-repeat: no-repeat;
+  background-size: contain; 
+  background-position: center;
   color: white;
   text-align: center;
   display: flex;

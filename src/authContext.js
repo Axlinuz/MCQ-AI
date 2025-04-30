@@ -18,7 +18,9 @@ export const AuthProvider = ({ children }) => {
     return () => unsubscribe();
   }, []);
   return (
-    <AuthContext.Provider value={{ user, loader }}>{children}</AuthContext.Provider>
+    <AuthContext.Provider value={{ user, loader }}>
+      {children}
+    </AuthContext.Provider>
   );
 };
 export const useAuth = () => useContext(AuthContext);
