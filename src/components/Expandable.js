@@ -5,11 +5,24 @@ import { useAuth } from "@/authContext";
 import { FiMenu, FiX } from "react-icons/fi";
 import Link from "next/link";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { auth } from "@/lib/firebase";
+import { signOut } from "firebase/auth";
 
 export default function Expandable({ state: isOpen, setIsOpen }) {
   const { user } = useAuth();
   const pathName = usePathname();
+  const router = useRouter();
+  const handleSignOut = async () => {
+    try {
+      await signOut(auth);
+      console.log("signed out");
+      router.push("/");
+      setIsOpen(false);
+    } catch (e) {
+      console.error("Sign out error:", e);
+    }
+  };
   return (
     <>
       <div
@@ -81,8 +94,8 @@ export default function Expandable({ state: isOpen, setIsOpen }) {
         </div>
         <div className="h-full flex justify-between flex-col">
           <button
-            onClick={() => handleSignout()}
-            className="border-1 border-red-600 p-1.5 rounded-lg text-red-500 cursor-pointer mb-8 w-1/4 hover:bg-red-600 hover:text-white transition-all ease-in- "
+            onClick={handleSignOut}
+            className="border-1 border-red-600 p-1.5 rounded-lg text-red-500 cursor-pointer mb-8 hover:bg-red-600 hover:text-white transition-all ease-in-out w-1/4 "
           >
             Sign Out
           </button>

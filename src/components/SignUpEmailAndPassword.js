@@ -27,7 +27,7 @@ export default function LoginEmailAndPassword() {
   }
   return (
     <form className="flex flex-col items-center" onSubmit={handleLogin}>
-      <h1>Create a new account</h1>
+      <h1 className="text-2xl">SIGN UP</h1>
       <input
         className="border-black border-1 rounded-lg p-1 w-full dark:border-white mt-1.5"
         type="email"
@@ -48,7 +48,7 @@ export default function LoginEmailAndPassword() {
         type="submit"
         className="border-1 bg-blue-500 rounded-lg p-1 mt-1.5 w-1/4 text-white"
       >
-        Submit
+        Sign up
       </button>
     </form>
   );
