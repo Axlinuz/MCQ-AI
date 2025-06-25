@@ -1,5 +1,10 @@
 "use client";
-
+import { ChevronDownIcon } from "@heroicons/react/20/solid";
+import {
+  HomeIcon,
+  Squares2X2Icon,
+  InformationCircleIcon,
+} from "@heroicons/react/24/outline";
 import { useAuth } from "@/authContext";
 import { auth } from "@/lib/firebase";
 import { signOut } from "firebase/auth";
@@ -13,6 +18,8 @@ import { usePathname } from "next/navigation";
 import { Varela_Round } from "next/font/google";
 import Loader from "./Loader";
 import Expandable from "./Expandable";
+import SignOutButton from "./SignOutButton";
+import Dashboard from "./Dashboard";
 
 const varela = Varela_Round({
   weight: "400",
@@ -79,14 +86,38 @@ export default function Navbar() {
           </Link>
         </ul>
         <div className="flex flex-row justify-between items-center p-1.5 h-full w-auto">
-          {user && (
-            <button
-              className="text-2xl mr-2.5 cursor-pointer"
-              onClick={() => setIsOpen(!isOpen)}
-            >
-              {isOpen ? <FiX color="white" /> : <FiMenu color="white" />}
-            </button>
-          )}
+          <span className="md:hidden h-full bg-white/60 backdrop-blur-lg rounded-2xl p-2 mr-2 text-lg flex flex-row items-center justify-center">
+            {pathName === "/" ? (
+              <Image
+                src={"/homeIcon.png"}
+                width={30}
+                height={30}
+                alt="Home icon"
+              />
+            ) : pathName === "/dashboard" ? (
+              <Image
+                src={"/dashboardIcon.png"}
+                width={20}
+                height={20}
+                alt="Home icon"
+              />
+            ) : pathName === "/about" ? (
+              <Image
+                src={"/aboutIcon.png"}
+                width={20}
+                height={20}
+                alt="Home icon"
+              />
+            ) : null}
+            <select>
+              <option onClick={() => router.push("/")}>Home</option>
+              <option onClick={() => router.push("/dashboard")}>Dash</option>
+              <option onClick={() => router.push("/about")}>About</option>
+            </select>
+            <div className="pointer-events-none flex items-center ">
+              <ChevronDownIcon className="h-5 w-5 text-gray-400" />
+            </div>
+          </span>
 
           {!loader ? (
             user ? (

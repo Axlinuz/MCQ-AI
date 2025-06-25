@@ -28,7 +28,7 @@ export default function AuthPage() {
   }, [user, route]);
   return (
     <main
-      className={`bg-white/30 backdrop-blur-lg p-4 rounded-3xl w-3/4 m-auto max-w-md mt-4 min-w-72 relative top-1/7 ${varela.className}`}
+      className={`bg-white/30 backdrop-blur-lg p-4 rounded-3xl w-3/4 m-auto max-w-md mt-4 min-w-72 relative top-1/7 ${varela.className} drop-shadow-2xl`}
     >
       {newUser ? <SignUpEmailAndPassword /> : <LoginEmailAndPassword />}
       {newUser ? (

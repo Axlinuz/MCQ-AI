@@ -25,7 +25,11 @@ export default function Expandable({ state: isOpen, setIsOpen }) {
   };
   return (
     <>
-      <div
+    
+
+
+
+      {/* <div
         className={`inset-0 z-50 backdrop-blur-lg transition-all ease-in-out ${
           isOpen ? "fixed" : "hidden"
         }`}
@@ -100,7 +104,7 @@ export default function Expandable({ state: isOpen, setIsOpen }) {
             Sign Out
           </button>
         </div>
-      </div>
+      </div> */}
     </>
   );
 }
