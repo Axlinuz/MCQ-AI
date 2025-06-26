@@ -85,7 +85,8 @@ export default function Expandable({ state: isOpen, setIsOpen }) {
         </ul>
         <div className="flex flex-col w-auto h-auto p-1.5 border-b-2 mb-2.5">
           <Image
-            src={user?.photoURL || "/pfp.png"} // Fallback to "/pfp.png" if photoURL is null/undefined
+            src={
+            ?.photoURL || "/pfp.png"} // Fallback to "/pfp.png" if photoURL is null/undefined
             alt="User profile"
             className="cursor-pointer rounded-full h-11 w-11"
             width={40}

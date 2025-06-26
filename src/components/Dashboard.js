@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { FaEdit } from "react-icons/fa";
 import Loader from "./Loader";
+import SignOutButton from "./SignOutButton";
 
 export default function Dashboard() {
   const { user, loader } = useAuth();
@@ -198,6 +199,7 @@ export default function Dashboard() {
       )}
       {error ? (error === null ? null : alert(error)) : null}
       {loading && <Loader />}
+      <SignOutButton/>
     </>
   );
 }

@@ -26,8 +26,8 @@ export default function RootLayout({ children }) {
         className={`${geistSans.variable} ${geistMono.variable} antialiased pt-20 pr-2 pl-2`}
       >
         <AuthProvider>
-          <Navbar />
           {children}
+          <Navbar />
         </AuthProvider>
       </body>
     </html>
