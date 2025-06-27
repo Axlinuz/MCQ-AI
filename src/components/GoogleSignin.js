@@ -4,7 +4,7 @@ import Image from "next/image";
 import { auth } from "@/lib/firebase";
 import { useRouter } from "next/navigation";
 
-export default function SignInButton() {
+export default function GoogleSignin() {
   const router = useRouter();
   const provider = new GoogleAuthProvider();
   const signInWithGoogle = async () => {
@@ -19,7 +19,7 @@ export default function SignInButton() {
   return (
     <button
       onClick={signInWithGoogle}
-      className="border-white border-2 rounded-lg mb-1.5 p-1 w-full text-white flex flex-row items-center justify-center cursor-pointer hover:bg-gray-600 dark:hover:bg-gray-700"
+      className="border-black border-2 rounded-lg mb-1.5 p-1 w-full text-black flex flex-row items-center cursor-pointer hover:bg-gray-600 dark:hover:bg-gray-700"
     >
       <Image
         src="/googleIcon.png"
@@ -28,7 +28,7 @@ export default function SignInButton() {
         className="w-auto h-auto"
         alt="Google Icon"
       />
-      Continue In With Google
+      Sign in with Google
     </button>
   );
 }

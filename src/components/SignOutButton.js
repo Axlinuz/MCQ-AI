@@ -19,7 +19,7 @@ export default function SignOutButton() {
   return (
     <button
       onClick={handleSignOut}
-      className="border-black border-2 rounded-3xl p-1 cursor-pointer flex-nowrap"
+      className="border-red-500 border-2 text-red-500 rounded-lg p-2 mt-3 w-3/4"
     >
       Sign Out
     </button>

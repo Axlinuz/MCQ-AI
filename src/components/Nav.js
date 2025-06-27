@@ -1,13 +1,7 @@
 "use client";
 
 import { useAuth } from "@/authContext";
-import { auth } from "@/lib/firebase";
-import { signOut } from "firebase/auth";
-import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-
 import { usePathname } from "next/navigation";
 
 import { Varela_Round } from "next/font/google";
@@ -19,32 +13,26 @@ const varela = Varela_Round({
 
 export default function Navbar() {
   const pathName = usePathname();
-  const { user, loader } = useAuth();
-  const router = useRouter();
-  const [isOpen, setIsOpen] = useState(false);
-  async function handleSignout() {
-    try {
-      await signOut(auth);
-      router.push("/");
-      setIsOpen(false);
-    } catch (e) {
-      console.log("Sign out error,", e);
-    }
-  }
+  const { user } = useAuth();
 
   return (
     <>
       <nav
-        className={`bg-white/40 backdrop-blur-lg flex items-center justify-between fixed bottom-3 left-0 right-0 max-w-3/4 md:max-w-5/10 mx-auto z-50 rounded-3xl p-2 ${varela.className} h-16 shadow-xl`}
+        className={`bg-white/40 backdrop-blur-sm flex items-center justify-between  fixed bottom-3 left-1/2 -translate-x-1/2  mx-auto z-50 rounded-3xl p-2 ${varela.className} h-16 transition-all ease-in-out duration-300 navbar`}
       >
-        <Link href={"/"}>
+        <Link
+          href={"/"}
+          className="flex items-center justify-center w-14 hover:scale-125 hover:w-20 transition-all ease-in-out duration-300 "
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
             strokeWidth={1.5}
             stroke="currentColor"
-            className="size-6"
+            className={`size-6 ${
+              pathName === "/" ? "border-b-2 border-purple-600" : ""
+            }`}
           >
             <path
               strokeLinecap="round"
@@ -54,14 +42,19 @@ export default function Navbar() {
           </svg>
         </Link>
 
-        <Link href={""}>
+        <Link
+          href={""}
+          className="flex items-center justify-center w-14 hover:scale-125 hover:w-20 transition-all ease-in-out duration-300"
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
             strokeWidth={1.5}
             stroke="currentColor"
-            className="size-6"
+            className={`size-6 ${
+              pathName === "" ? "border-b-2 border-purple-600" : ""
+            }`}
           >
             <path
               strokeLinecap="round"
@@ -71,14 +64,19 @@ export default function Navbar() {
           </svg>
         </Link>
 
-        <Link href={"/dashboard"}>
+        <Link
+          href={user ? "/dashboard" : "/auth"}
+          className="flex items-center justify-center w-14 hover:scale-125 hover:w-20 transition-all ease-in-out duration-300"
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
             strokeWidth={1.5}
             stroke="purple"
-            className="size-13 bg-white p-1 rounded-2xl"
+            className={` size-13 bg-white p-1 rounded-2xl ${
+              pathName === "/dashboard" ? "border-b-2 border-purple-600" : ""
+            }`}
           >
             <path
               strokeLinecap="round"
@@ -88,14 +86,19 @@ export default function Navbar() {
           </svg>
         </Link>
 
-        <Link href={"/about"}>
+        <Link
+          href={"/about"}
+          className="flex items-center justify-center w-14 hover:scale-125 hover:w-20 transition-all ease-in-out duration-300"
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
             strokeWidth={1.5}
             stroke="currentColor"
-            className="size-6"
+            className={`size-6 ${
+              pathName === "/about" ? "border-b-2 border-purple-600" : ""
+            }`}
           >
             <path
               strokeLinecap="round"
@@ -105,14 +108,19 @@ export default function Navbar() {
           </svg>
         </Link>
 
-        <Link href={user ? "/user" : "/auth"}>
+        <Link
+          href={user ? "/user" : "/auth"}
+          className="flex items-center justify-center w-14 hover:scale-125 hover:w-20 transition-all ease-in-out duration-300"
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
             strokeWidth={1.5}
             stroke="currentColor"
-            className="size-6"
+            className={`size-6 ${
+              pathName === "/user" ? "border-b-2 border-purple-600" : ""
+            }`}
           >
             <path
               strokeLinecap="round"
