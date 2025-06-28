@@ -25,7 +25,7 @@ export default function GoogleSignin() {
         src="/googleIcon.png"
         width={30}
         height={30}
-        className="w-auto h-auto"
+        className="w-auto h-auto mr-2"
         alt="Google Icon"
       />
       Sign in with Google

@@ -24,7 +24,7 @@ export default function AnonymousSignin() {
         src="/pfp.jpg"
         width={30}
         height={30}
-        className="w-auto h-auto rounded-full"
+        className="w-auto h-auto rounded-full mr-2"
         alt="Google Icon"
       />
       Sign in Anonymously

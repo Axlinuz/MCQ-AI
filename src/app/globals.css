@@ -21,22 +21,5 @@ select {
 .navbar, .boxWithShadow{
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 }
-/* In your global CSS file, e.g., app/globals.css */
-
-.diagonal-stripes-bg {
-  background:
-    linear-gradient(
-      -45deg, /* Angle for diagonal stripes */
-      #f3e8ff 10%, /* Very light purple/lavender */
-      #ffffff 10%, /* White */
-      #ffffff 50%, /* White */
-      #f3e8ff 50%, /* Very light purple/lavender */
-      #f3e8ff 60%, /* Very light purple/lavender */
-      #ffffff 60%, /* White */
-      #ffffff 100% /* White */
-    );
-  background-size: 40px 40px; /* Adjust this to control stripe width and spacing */
-  /* You can also use a larger background-size for wider stripes, e.g., 80px 80px */
-}
 
 

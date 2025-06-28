@@ -37,12 +37,12 @@ export default function UserPage() {
                 : user?.displayName}</span>
           </div>
           <div className="flex justify-between border-b py-2">
-            <span className="font-semibold">Uid</span>
+            <span className="font-semibold">Uid:</span>
             <span className="truncate ml-4">{user?.uid || "Not set"}</span>
           </div>
           <div className="flex justify-between border-b py-2">
-            <span className="font-semibold">Email:</span>
-            <span>{user?.email || "Not set"}</span>
+            <span className="font-semibold mr-2">Email:</span>
+            <span className="truncate">{user?.email || "Not set"}</span>
           </div>
           <div className="flex justify-between border-b py-2">
             <span className="font-semibold">Phone Number:</span>

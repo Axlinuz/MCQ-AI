@@ -3,8 +3,10 @@
 import { useAuth } from "@/authContext";
 
 import Loader from "./Loader";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Varela_Round, Plus_Jakarta_Sans } from "next/font/google";
+import HowItWorks from "./HowItWorks";
+import { useRouter } from "next/navigation";
 
 const varela = Varela_Round({
   weight: "400",
@@ -21,9 +23,22 @@ export default function Dashboard() {
   const [userPrompt, setUserPrompt] = useState("");
   const [error, setError] = useState(null);
   const [showAnswer, setShowAnswer] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [edit, setEdit] = useState(true);
+  const { user, load } = useAuth();
+  const router = useRouter();
 
+  useEffect(() => {
+    if (load) {
+      setLoading(true);
+      return; // Exit the effect early
+    }
+    if (user) {
+      setLoading(false);
+    } else {
+      router.push("/auth");
+    }
+  }, [user, load, router]);
   function shuffleOptions(options) {
     return options.sort(() => Math.random() - 0.5);
   }
@@ -118,17 +133,17 @@ export default function Dashboard() {
           MCQData && !edit ? "" : "hidden"
         }`}
       >
-        <section>
+        <section className="mt-16">
           <h1 className={`${varela.className} text-2xl`}>
             {MCQData?.question}
           </h1>
         </section>
 
-        <section className="grid md:grid-cols-2 gap-2 p-2 w-full rounded-lg">
+        <section className="grid md:grid-cols-2 gap-2 p-2 w-full md:w-2/3 rounded-lg">
           {MCQData?.options.map((choice, index) => (
             <div
               key={index}
-              className={`p-2 border-2 mt-2 rounded-lg shadown-lg w-full 
+              className={`p-2 border-2 mt-2 rounded-lg shadown-lg w-full  
                 ${Plus_Jakarta_Sans_font.className}
                 ${
                   showAnswer && choice.correctAnswer ? " border-green-400" : ""
@@ -157,51 +172,49 @@ export default function Dashboard() {
               </span>
             </div>
           ))}
-
-          <section className="flex flex-row justify-between items-center w-full p-2 rounded-lg">
-            <div className="flex flex-row items-center justify-between gap-4 rounded-lg">
-              <button onClick={() => fetchData()}>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className="size-6"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99"
-                  />
-                </svg>
-              </button>
-
-              <button onClick={() => setEdit(true)}>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className="size-6"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"
-                  />
-                </svg>
-              </button>
-            </div>
-
-            <button
-              onClick={() => setShowAnswer(true)}
-              className="w-auto bg-white text-purple-600 border-2 border-purple-600 p-2 rounded-lg"
-            >
-              Show Answer
+        </section>
+        <section className="flex flex-row justify-between items-center w-full md:w-2/3 p-2 rounded-lg">
+          <div className="flex flex-row items-center justify-between gap-4 rounded-lg">
+            <button onClick={() => fetchData()}>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="size-6"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99"
+                />
+              </svg>
             </button>
-          </section>
+
+            <button onClick={() => setEdit(true)}>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="size-6"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"
+                />
+              </svg>
+            </button>
+          </div>
+          <button
+            onClick={() => setShowAnswer(true)}
+            className="w-auto bg-white text-purple-600 border-2 border-purple-600 p-2 rounded-lg"
+          >
+            Show Answer
+          </button>
         </section>
       </section>
       {/* {MCQData && (
@@ -271,6 +284,7 @@ export default function Dashboard() {
       )} */}
       {error ? (error === null ? null : alert(error)) : null}
       {loading && <Loader />}
+      <HowItWorks />
     </>
   );
 }

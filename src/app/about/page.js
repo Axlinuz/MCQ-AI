@@ -8,7 +8,7 @@ const varela = Varela_Round({
 
 export default function About() {
   return (
-    <main className={`md:max-w-2/4 m-auto ${varela.className}`}>
+    <main className={`md:max-w-1/4  m-auto ${varela.className}`}>
       <div className="pt-2.5 flex flex-col p-2.5 border-b-2 border-black dark:border-white">
         <h2 className="text-lg font-bold text-center">About This Website</h2>
         <p className=" text-center">
@@ -45,7 +45,7 @@ export default function About() {
         <h2 className="text-lg font-bold text-center">Citations</h2>
         <p className=" text-center">
           The quiz making engine is powered by Google&apos;s Gemini-2.5-pro. The
-          api key and service are all from a third party site called{" "}
+          api key and service are all from a third party site,{" "}
           <a href="https://openrouter.ai/" className="text-blue-600">
             OpenRouter.
           </a>
@@ -54,7 +54,7 @@ export default function About() {
 
       <div className="pt-2.5 flex flex-col p-2.5 border-b-2 border-black dark:border-white">
         <h1 className="text-lg font-bold text-center">Reach me out on..</h1>
-        <div className="m-auto flex items-center justify-center">
+        <div className="m-auto flex items-center justify-between w-1/2">
           <a href="https://t.me/lianpui">
             <Image
               src={"/telegram.svg"}

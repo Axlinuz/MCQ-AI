@@ -23,11 +23,14 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <link rel="icon" href="/logo.png" type="image/png" sizes="32x32" />
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased p-3`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased p-3 pb-16 bg-white `}
       >
         <AuthProvider>
           {children}
           <Navbar />
+          <footer className="text-center py-6 text-gray-500 text-sm">
+            © 2025 MCQ-AI. Built by Lian.
+          </footer>
         </AuthProvider>
       </body>
     </html>
