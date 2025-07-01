@@ -43,7 +43,7 @@ export default function Navbar() {
         </Link>
 
         <Link
-          href={""}
+          href={"/report"}
           className="flex items-center justify-center w-14 hover:scale-125 hover:w-20 transition-all ease-in-out duration-300"
         >
           <svg
