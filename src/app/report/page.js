@@ -6,10 +6,11 @@ export default function page() {
   const [sender, setSender] = useState("");
   const [message, setMessage] = useState("");
   const [status, setStatus] = useState(false);
+  const [sendStatus, setSendStatus] = useState(false);
 
-  async function handeSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
-
+    setSendStatus(true);
     const res = await fetch("/api/send-feedback", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -17,33 +18,34 @@ export default function page() {
     });
     const data = await res.json();
     setStatus(data.success ? "Feedback Sent" : "Error while sending feedback");
+    setSendStatus(false);
   }
 
   return (
     <main className="m-auto w-full">
       <form
         className="flex flex-col items-center justify-center gap-2 w-full"
-        onSubmit={handeSubmit}
+        onSubmit={handleSubmit}
       >
         <h1 className="text-left w-4/5 font-bold text-2xl mb-3">
-          Send us feedbacks
+          Send us a report
         </h1>
         <input
           type="text"
           className="border-2 border-black/40 focus:border-black rounded-lg h-12 outline-none p-2 w-4/5"
-          placeholder="Your name or email"
+          placeholder="Your name or email (required)"
           value={sender}
           onChange={(e) => setSender(e.target.value)}
         />
         <textarea
           className="h-32 border-2 border-black/40 focus:border-black outline-none rounded-lg p-2 w-4/5"
-          placeholder="Write your feedback here.."
+          placeholder="Write your report here.."
           value={message}
           onChange={(e) => setMessage(e.target.value)}
         />
 
         <button className=" bg-purple-600 text-white p-2 rounded-lg w-2/3 flex flex-row items-center justify-center gap-1">
-          Send{" "}
+          {sendStatus ? "Sending.." : "Send"}
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -59,8 +61,14 @@ export default function page() {
             />
           </svg>
         </button>
+        <span className="w-2/3 text-center text-lg">
+          {status === "Feedback Sent"
+            ? `${status} Thank you for your report. We will review it as soon as possible.`
+            : status === "Error while sending feedback."
+            ? `${status} Error while sending. Please try again}`
+            : null}
+        </span>
       </form>
-      <p>{status}</p>
     </main>
   );
 }
