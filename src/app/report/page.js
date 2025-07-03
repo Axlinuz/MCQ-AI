@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-export default function page() {
+export default function Page() {
   const [sender, setSender] = useState("");
   const [message, setMessage] = useState("");
   const [status, setStatus] = useState(false);
